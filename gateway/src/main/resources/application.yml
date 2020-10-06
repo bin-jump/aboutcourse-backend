@@ -1,0 +1,15 @@
+server:
+  port : 8081
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: gateway-service
+
+zuul:
+  routes:
+    schedule-route:
+      url: http://localhost:8083
+      path: /schedule/**
+
