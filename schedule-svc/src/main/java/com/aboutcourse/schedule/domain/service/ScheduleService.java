@@ -19,17 +19,16 @@ public class ScheduleService {
 
         User user = userRepository.getById(command.getUserId());
 
-        Task task = new Task();
-//                Task.builder()
-//                .title(command.getTitle())
-//                .startDate(command.getStartDate())
-//                .dueDate(command.getDueDate())
-//                .startTime(command.getStartTime())
-//                .endTime(command.getEndTime())
-//                .period(command.isPeriod())
-//                .repeat(command.getRepeat())
-//                .info(command.getInfo())
-//                .build();
+        Task task = Task.builder()
+                .title(command.getTitle())
+                .startDate(command.getStartDate())
+                .dueDate(command.getDueDate())
+                .startTime(command.getStartTime())
+                .endTime(command.getEndTime())
+                .period(command.isPeriod())
+                .repeat(command.getRepeat())
+                .info(command.getInfo())
+                .build();
 
         command.getTags().forEach(e -> {
             task.getTags().add(new Tag(e.getId(), command.getUserId(), e.getLabel()));

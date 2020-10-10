@@ -51,13 +51,16 @@ public class Task extends EntityBase<Task> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "task_tag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @Builder.Default
     private Set<Tag> tags = new HashSet<>();
 
-
+    public void addTag(Tag tag) {
+        tag.getTasks().add(this);
+        tags.add(tag);
+    }
 
 }
