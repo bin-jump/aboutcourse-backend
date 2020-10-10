@@ -23,7 +23,7 @@ public abstract class ValueObject<T extends ValueObject<T>> {
 
     @Override
     public int hashCode() {
-        return getEquityProperty().size() != 0 ?
+        return getEquityProperty().size() > 0 ?
                 getEquityProperty().hashCode() : 0;
     }
 }

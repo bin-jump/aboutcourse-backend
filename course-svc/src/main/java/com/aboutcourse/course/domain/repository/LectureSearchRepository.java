@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LectureRepository {
+public interface LectureSearchRepository {
 
-    Lecture create(Lecture lecture);
+    void save(Lecture lecture);
 
-    //List<Lecture> getByUser(long uid);
+    List<Lecture> search(String school, String major, String key);
+
 }

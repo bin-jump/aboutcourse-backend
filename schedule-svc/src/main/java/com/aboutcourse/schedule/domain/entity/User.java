@@ -1,47 +1,56 @@
 package com.aboutcourse.schedule.domain.entity;
 
 
-import com.aboutcourse.common.shared.Entity;
-import com.aboutcourse.schedule.domain.entity.valueobject.LectureTask;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.aboutcourse.common.shared.EntityBase;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class User extends Entity<User> {
+@Builder
+@Entity
+public class User extends EntityBase<User> {
 
+    @Column(name = "name")
     private String name;
 
-    private List<Task> tasks = new ArrayList<>();
+    @Column(name = "school")
+    private String school;
 
-    private List<LectureTask> lectures = new ArrayList<>();
+    @Column(name = "major")
+    private String major;
 
-    private List<Task> tasksRemove = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<Task> tasks = new HashSet<>();
 
-    private List<LectureTask> lecturesRemove = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<LectureItem> lectures = new HashSet<>();
+
 
     public void addTask(Task task) {
-        tasksRemove.remove(task);
-        tasks.add(task);
+        task.setUser(this);
+        this.tasks.add(task);
     }
 
-    public void addLecture(LectureTask lectureTask) {
-        lectures.add(lectureTask);
-        lecturesRemove.remove(lectureTask);
+    public void addLecture(LectureItem lectureTask) {
+        lectureTask.setUser(this);
+        this.lectures.add(lectureTask);
     }
 
     public void removeTask(Task task) {
-        tasks.remove(task);
-        tasksRemove.add(task);
+        this.tasks.remove(task);
     }
 
-    public void removeLecture(LectureTask lectureTask) {
-        lectures.remove(lectureTask);
-        lecturesRemove.add(lectureTask);
+    public void removeLecture(LectureItem lectureTask) {
+        this.lectures.remove(lectureTask);
     }
 }

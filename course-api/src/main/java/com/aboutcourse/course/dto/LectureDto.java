@@ -1,9 +1,6 @@
-package com.aboutcourse.schedule.dto;
+package com.aboutcourse.course.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -24,7 +21,8 @@ public class LectureDto {
 
     private long dueDate;
 
-    private List<TimeIntervalDto> intervals = new ArrayList<TimeIntervalDto>();
+    @Singular
+    private List<TimeIntervalDto> intervals = new ArrayList<>();
 
     private String info;
 

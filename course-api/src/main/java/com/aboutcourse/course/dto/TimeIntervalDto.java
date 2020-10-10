@@ -1,4 +1,4 @@
-package com.aboutcourse.schedule.dto;
+package com.aboutcourse.course.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +16,5 @@ public class TimeIntervalDto {
     private long start;
 
     private long end;
+
 }

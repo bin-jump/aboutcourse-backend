@@ -2,10 +2,8 @@ package com.aboutcourse.schedule.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -32,7 +30,8 @@ public class TaskDto {
 
     private String repeat;
 
-    private List<TagDto> tags = new ArrayList<TagDto>();
+    @Singular
+    private List<TagDto> tags = new ArrayList<>();;
 
     private String info;
 

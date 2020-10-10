@@ -4,3 +4,13 @@ spring:
     active: dev
   application:
     name: schedule-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/aboutcourse?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

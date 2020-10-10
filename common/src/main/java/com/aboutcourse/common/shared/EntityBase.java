@@ -3,12 +3,20 @@ package com.aboutcourse.common.shared;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+
 @Getter
 @Setter
-public class Entity<T extends Entity<T>> {
+@MappedSuperclass
+public class EntityBase<T extends EntityBase<T>> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     protected Long id;
 
+    @Version
+    @Column(name = "version")
     protected long version = 1;
 
     @Override
@@ -17,12 +25,12 @@ public class Entity<T extends Entity<T>> {
             return true;
         }
 
-        if (!(o instanceof Entity)) {
+        if (!(o instanceof EntityBase)) {
             return false;
         }
 
         final T other = (T) o;
-        return getId().equals(other.getId());
+        return getId() != null && getId().equals(other.getId());
     }
 
     @Override

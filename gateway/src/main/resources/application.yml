@@ -12,4 +12,7 @@ zuul:
     schedule-route:
       url: http://localhost:8083
       path: /schedule/**
+    course-route:
+      url: http://localhost:8084
+      path: /course/**
 
