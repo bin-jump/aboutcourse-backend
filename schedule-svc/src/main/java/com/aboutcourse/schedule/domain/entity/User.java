@@ -18,13 +18,13 @@ import java.util.Set;
 @Entity
 public class User extends EntityBase<User> {
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "school")
+    @Column(name = "school", nullable = false)
     private String school;
 
-    @Column(name = "major")
+    @Column(name = "major", nullable = false)
     private String major;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)

@@ -17,13 +17,14 @@ public class ScheduleApplicationService {
     @Autowired
     CourseClient courseClient;
 
-    //@Autowired
-    //ScheduleService scheduleService;
+    @Autowired
+    ScheduleService scheduleService;
 
     public LectureDto createAndAddLecture(long uid, LectureDto lectureDto) {
 
         BaseResponse<LectureDto> res = courseClient.createLecture(lectureDto);
-        //scheduleService.AddUserLecture(uid, res.getLectureDto().getId());
+        scheduleService.AddUserLecture(uid, res.getDate().getId());
+
         log.error("createAndAddLecture: " + res.getDate().getId());
         return res.getDate();
     }

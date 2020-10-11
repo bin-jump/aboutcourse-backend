@@ -19,8 +19,8 @@ import java.util.List;
 @Entity
 public class LectureItem extends EntityBase<LectureItem> {
 
-    @Column(name = "lecture_id")
-    private long lectureId;
+    @Column(name = "lecture_id", nullable = false)
+    private Long lectureId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")

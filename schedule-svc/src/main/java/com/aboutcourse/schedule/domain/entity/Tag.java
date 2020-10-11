@@ -7,10 +7,17 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(
+        uniqueConstraints={
+                @UniqueConstraint(columnNames = {"user_id", "label"})
+        }
+)
 public class Tag extends EntityBase<Tag> {
-
-    public Tag(){}
 
     public Tag(Long id, Long userId, String label) {
         this.id = id;
@@ -24,18 +31,11 @@ public class Tag extends EntityBase<Tag> {
     @Column(name = "label", nullable = false)
     private String label;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.PERSIST)
     private Set<Task> tasks = new HashSet<>();
 
-    public Set<Task> getTasks() {
-        return tasks;
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

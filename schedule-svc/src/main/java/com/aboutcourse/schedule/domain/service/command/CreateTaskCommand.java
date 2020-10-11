@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateTaskCommand {
 
-    private long userId;
+    private Long userId;
 
     private String title;
 

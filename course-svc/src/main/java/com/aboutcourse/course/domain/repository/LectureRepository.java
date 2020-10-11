@@ -10,5 +10,7 @@ public interface LectureRepository {
 
     Lecture create(Lecture lecture);
 
-    //List<Lecture> getByUser(long uid);
+    Lecture getById(Long id);
+
+    List<Lecture> getByIds(List<Long> ids);
 }

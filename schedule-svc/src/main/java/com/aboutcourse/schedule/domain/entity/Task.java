@@ -16,6 +16,9 @@ import java.util.*;
 @Table(
         indexes = {
                 @Index(columnList = "user_id")
+        },
+        uniqueConstraints={
+                @UniqueConstraint(columnNames = {"id", "title"})
         }
 )
 public class Task extends EntityBase<Task> {
@@ -23,25 +26,25 @@ public class Task extends EntityBase<Task> {
 //    @Column(name = "user_id")
 //    private Long userId;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private Date startDate;
 
-    @Column(name = "due_date")
+    @Column(name = "due_date", nullable = false)
     private Date dueDate;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private Date startTime;
 
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable = false)
     private Date endTime;
 
-    @Column(name = "period")
+    @Column(name = "period", nullable = false)
     private boolean period;
 
-    @Column(name = "repeat_type")
+    @Column(name = "repeat_type", nullable = false)
     private RepeatType repeat = RepeatType.NONE;
 
     @Column(name = "info")
