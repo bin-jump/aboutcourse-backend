@@ -15,10 +15,10 @@ public class BaseResponse<T> {
     @Builder.Default
     private ResultCode code = ResultCode.SUCCESS;
 
-    private T date;
+    private T data;
 
     public BaseResponse(T data) {
-        this.date = data;
+        this.data = data;
     }
 
     public boolean isSuccess() {

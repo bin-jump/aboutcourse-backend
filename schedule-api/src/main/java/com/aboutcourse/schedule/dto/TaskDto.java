@@ -18,20 +18,20 @@ public class TaskDto {
     @NotBlank
     private String title;
 
-    private long startDate;
+    private Long startDate;
 
-    private long dueDate;
+    private Long dueDate;
 
-    private long startTime;
+    private Long startTime;
 
-    private long endTime;
+    private Long endTime;
 
     private boolean period;
 
     private String repeat;
 
-    @Singular
-    private List<TagDto> tags = new ArrayList<>();;
+    @Builder.Default
+    private List<TagDto> tags = new ArrayList<>();
 
     private String info;
 

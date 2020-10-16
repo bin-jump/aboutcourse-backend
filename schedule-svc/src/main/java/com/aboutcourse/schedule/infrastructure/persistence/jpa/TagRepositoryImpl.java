@@ -18,4 +18,9 @@ public class TagRepositoryImpl implements TagRepository {
     public List<Tag> findByNamePrefix(long uid, String prefix) {
         return tagJpaRepository.findByUserIdAndLabelStartsWith(uid, prefix);
     }
+
+    @Override
+    public List<Tag> findByNames(long uid, List<String> names) {
+        return tagJpaRepository.findByUserIdAndLabelIn(uid, names);
+    }
 }

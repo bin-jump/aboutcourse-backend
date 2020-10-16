@@ -2,6 +2,7 @@ package com.aboutcourse.schedule.domain.entity;
 
 
 import com.aboutcourse.common.shared.EntityBase;
+import com.aboutcourse.schedule.domain.entity.valueobject.RepeatType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,11 +28,12 @@ public class User extends EntityBase<User> {
     @Column(name = "major", nullable = false)
     private String major;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @Builder.Default
     private Set<Task> tasks = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<LectureItem> lectures = new HashSet<>();
 
@@ -48,9 +50,17 @@ public class User extends EntityBase<User> {
 
     public void removeTask(Task task) {
         this.tasks.remove(task);
+        task.setUser(null);
     }
 
     public void removeLecture(LectureItem lectureTask) {
         this.lectures.remove(lectureTask);
+        lectureTask.setUser(null);
     }
+
+    private boolean timeOverlap(Task task1, Task task2) {
+        return !(task1.getStartTime().after(task2.getEndTime()) ||
+                task1.getEndTime().before(task2.getStartTime()));
+    }
+
 }

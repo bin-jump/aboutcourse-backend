@@ -10,5 +10,5 @@ public interface UserRepository {
 
     User getById(long uid);
 
-    void update(User user);
+    User update(User user);
 }

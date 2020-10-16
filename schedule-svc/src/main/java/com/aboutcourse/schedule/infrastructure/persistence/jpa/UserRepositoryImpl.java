@@ -19,11 +19,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(long uid) {
-        return userJpaRepsitory.findById(uid).get();
+        return userJpaRepsitory.findById(uid).orElse(null);
     }
 
     @Override
-    public void update(User user) {
-        userJpaRepsitory.save(user);
+    public User update(User user) {
+        return userJpaRepsitory.save(user);
     }
 }

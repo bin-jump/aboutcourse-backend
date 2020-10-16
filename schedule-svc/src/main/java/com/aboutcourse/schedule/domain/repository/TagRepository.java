@@ -9,4 +9,6 @@ import java.util.List;
 public interface TagRepository {
 
     List<Tag> findByNamePrefix(long uid, String prefix);
+
+    List<Tag> findByNames(long uid, List<String> names);
 }

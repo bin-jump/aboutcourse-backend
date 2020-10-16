@@ -8,6 +8,8 @@ spring:
     name: gateway-service
 
 zuul:
+  host:
+    socket-timeout-millis: 30000
   routes:
     schedule-route:
       url: http://localhost:8083

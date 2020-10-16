@@ -1,9 +1,7 @@
 package com.aboutcourse.schedule.domain.service.command;
 
 import com.aboutcourse.schedule.domain.entity.valueobject.RepeatType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateTaskCommand {
 
     private Long userId;
@@ -30,17 +30,29 @@ public class CreateTaskCommand {
 
     private RepeatType repeat = RepeatType.NONE;
 
+    @Builder.Default
     private List<TagItem> tags = new ArrayList<>();
 
     private String info;
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public class TagItem {
+    public static class TagItem {
+
+        public TagItem(Long id, String label) {
+            this.id = id;
+            this.label = label;
+        }
 
         private Long id;
 
         private String label;
+
+        public Long getId() {
+            return this.id;
+        }
+
+        public String getLabel() {
+            return this.label;
+        }
+
     }
 }

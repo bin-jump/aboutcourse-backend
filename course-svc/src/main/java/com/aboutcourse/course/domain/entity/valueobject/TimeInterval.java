@@ -2,6 +2,7 @@ package com.aboutcourse.course.domain.entity.valueobject;
 
 import com.aboutcourse.common.error.InvalidValueException;
 import com.aboutcourse.common.shared.EntityBase;
+import com.aboutcourse.common.util.Helper;
 import com.aboutcourse.course.domain.entity.Lecture;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,9 @@ public class TimeInterval extends EntityBase<TimeInterval> {
         if (e.before(s)) {
             throw new InvalidValueException("start and end time of time interval not valid");
         }
+        if (!(Helper.validTime(s) && Helper.validTime(e))) {
+            throw new InvalidValueException("start and end time of time interval not valid");
+        }
 
         day = d;
         start = s;
@@ -33,9 +37,11 @@ public class TimeInterval extends EntityBase<TimeInterval> {
     private int day;
 
     @Column(name = "start")
+    @Temporal(TemporalType.TIME)
     private Date start;
 
     @Column(name = "end")
+    @Temporal(TemporalType.TIME)
     private Date end;
 
     @ManyToOne

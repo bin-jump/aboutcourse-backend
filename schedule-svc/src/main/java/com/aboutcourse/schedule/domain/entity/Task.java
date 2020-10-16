@@ -1,6 +1,8 @@
 package com.aboutcourse.schedule.domain.entity;
 
+import com.aboutcourse.common.error.InvalidValueException;
 import com.aboutcourse.common.shared.EntityBase;
+import com.aboutcourse.common.util.Helper;
 import com.aboutcourse.schedule.domain.entity.valueobject.RepeatType;
 import lombok.*;
 
@@ -30,15 +32,19 @@ public class Task extends EntityBase<Task> {
     private String title;
 
     @Column(name = "start_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @Column(name = "due_date", nullable = false)
+    @Column(name = "due_date")
+    @Temporal(TemporalType.DATE)
     private Date dueDate;
 
     @Column(name = "start_time", nullable = false)
+    @Temporal(TemporalType.TIME)
     private Date startTime;
 
     @Column(name = "end_time", nullable = false)
+    @Temporal(TemporalType.TIME)
     private Date endTime;
 
     @Column(name = "period", nullable = false)
@@ -54,12 +60,27 @@ public class Task extends EntityBase<Task> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "task_tag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @Builder.Default
     private Set<Tag> tags = new HashSet<>();
+
+
+    public void setStartTime(Date time) {
+        if (!Helper.validTime(time)) {
+            throw new InvalidValueException("start time of task not valid");
+        }
+        this.startTime = time;
+    }
+
+    public void setEndTime(Date time) {
+        if (!Helper.validTime(time)) {
+            throw new InvalidValueException("start time of task not valid");
+        }
+        this.endTime = time;
+    }
 
     public void addTag(Tag tag) {
         tag.getTasks().add(this);

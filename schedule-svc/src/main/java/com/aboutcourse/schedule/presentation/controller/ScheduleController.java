@@ -1,16 +1,17 @@
 package com.aboutcourse.schedule.presentation.controller;
 
+import com.aboutcourse.common.api.BaseResponse;
+import com.aboutcourse.common.auth.AuthContext;
 import com.aboutcourse.course.dto.LectureDto;
 import com.aboutcourse.schedule.application.ScheduleApplicationService;
 import com.aboutcourse.schedule.domain.service.ScheduleService;
 import com.aboutcourse.schedule.dto.TaskDto;
+import com.aboutcourse.schedule.dto.TaskItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,32 +20,35 @@ import java.util.List;
 @Validated
 public class ScheduleController {
 
+
+
     @Autowired
     ScheduleApplicationService scheduleApplicationService;
 
     @PostMapping("task")
-    public TaskDto create(TaskDto taskDto) {
+    public BaseResponse<TaskDto> create(@RequestBody TaskDto taskDto) {
+        Long userId = AuthContext.getUserId();
+        taskDto = scheduleApplicationService.createTask(userId, taskDto);
 
-        taskDto.setId(1L);
-        return taskDto;
+        return new BaseResponse<>(taskDto);
     }
 
 
-    @GetMapping
-    public List<Object> getAll() {
+    @GetMapping("my-schedule")
+    public BaseResponse<List<TaskItemDto>> getAll() {
+        Long userId = AuthContext.getUserId();
+        List<TaskItemDto> res = scheduleApplicationService.getUserSchedule(userId);
 
-        List<Object> res = new ArrayList<>();
-
-        return res;
+        return new BaseResponse<>(res);
     }
 
-    @GetMapping("test")
-    public String test() {
+    @DeleteMapping("task/{id}")
+    public BaseResponse remove(@PathVariable Long id) {
+        Long userId = AuthContext.getUserId();
+        scheduleApplicationService.removeTask(userId, id);
 
-        scheduleApplicationService.createAndAddLecture(1L, LectureDto.builder()
-                .id(22L)
-                .build());
-        return "sch test";
+        return new BaseResponse();
     }
+
 
 }
