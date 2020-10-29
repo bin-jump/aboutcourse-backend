@@ -28,8 +28,7 @@ public class User extends EntityBase<User> {
     @Column(name = "major", nullable = false)
     private String major;
 
-    @OneToMany(mappedBy = "user",
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Task> tasks = new HashSet<>();
 

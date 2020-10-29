@@ -25,10 +25,7 @@ import java.util.*;
 )
 public class Task extends EntityBase<Task> {
 
-//    @Column(name = "user_id")
-//    private Long userId;
-
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
 
     @Column(name = "start_date", nullable = false)
@@ -60,7 +57,7 @@ public class Task extends EntityBase<Task> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(name = "task_tag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))

@@ -13,6 +13,9 @@ public class LectureAssembler {
 
         LectureDto lectureDto = LectureDto.builder()
                 .id(lecture.getId())
+                .title(lecture.getTitle())
+                .schoolId(lecture.getSchoolId())
+                .majorId(lecture.getMajorId())
                 .startDate(lecture.getStartDate().getTime())
                 .dueDate(lecture.getDueDate().getTime())
                 .info(lecture.getInfo())

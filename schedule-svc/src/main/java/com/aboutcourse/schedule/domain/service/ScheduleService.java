@@ -2,6 +2,7 @@ package com.aboutcourse.schedule.domain.service;
 
 import com.aboutcourse.common.error.InvalidValueException;
 import com.aboutcourse.common.error.ResourceNotFoundException;
+import com.aboutcourse.common.util.Helper;
 import com.aboutcourse.schedule.domain.entity.LectureItem;
 import com.aboutcourse.schedule.domain.entity.Tag;
 import com.aboutcourse.schedule.domain.entity.Task;
@@ -14,6 +15,7 @@ import com.aboutcourse.schedule.domain.service.command.CreateTaskCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -38,13 +40,6 @@ public class ScheduleService {
         if (user == null) {
             throw new ResourceNotFoundException("user not found");
         }
-        if (command.getRepeat() != RepeatType.NONE &&
-                command.getStartDate().after(command.getDueDate())) {
-            throw new InvalidValueException("invalid task date");
-        }
-        if (command.getStartTime().after(command.getEndTime())) {
-            throw new InvalidValueException("invalid task date");
-        }
 
         Map<String, Tag> existTags = tagRepository.findByNames(command.getUserId(),
                 command.getTags().stream().map(CreateTaskCommand.TagItem::getLabel)
@@ -53,11 +48,11 @@ public class ScheduleService {
 
         Task task = Task.builder()
                 .title(command.getTitle())
-                .startDate(command.getStartDate())
-                .dueDate(command.getRepeat() == RepeatType.NONE ?
-                        command.getStartDate() : command.getDueDate())
-                .startTime(command.getStartTime())
-                .endTime(command.getEndTime())
+                .startDate(Helper.dateOnly(command.getStartDate()))
+                .dueDate(Helper.dateOnly(command.getRepeat() == RepeatType.NONE ?
+                        command.getStartDate() : command.getDueDate()))
+                .startTime(Helper.timeOnly(command.getStartTime()))
+                .endTime(Helper.timeOnly(command.getEndTime()))
                 .period(command.isPeriod())
                 .repeat(command.getRepeat())
                 .info(command.getInfo())
@@ -69,15 +64,15 @@ public class ScheduleService {
             task.getTags().add(tag);
         });
 
+        validateTask(task);
         trimWeekPeriodTask(task);
-
 //        user.addTask(task);
 //        User updated = userRepository.update(user);
         task.setUser(user);
         return taskRepository.create(task);
     }
 
-    public void addUserLecture(long lid, long uid) {
+    public void addUserLecture(Long uid, Long lid) {
         User user = userRepository.getById(uid);
         if (user == null) {
             throw new ResourceNotFoundException("user not found");
@@ -87,7 +82,7 @@ public class ScheduleService {
         userRepository.update(user);
     }
 
-    public void removeTask(long uid, long tid) {
+    public void removeTask(Long uid, Long tid) {
         User user = userRepository.getById(uid);
         if (user == null) {
             throw new ResourceNotFoundException("user not found");
@@ -103,17 +98,35 @@ public class ScheduleService {
         userRepository.update(user);
     }
 
-    public void removeLecture(long uid, long lid) {
+    public void removeLecture(Long uid, Long lid) {
         User user = userRepository.getById(uid);
         if (user == null) {
             throw new ResourceNotFoundException("user not found");
         }
 
-        LectureItem task = user.getLectures()
+        LectureItem lectureItem = user.getLectures()
                 .stream().filter(t -> t.getLectureId() == lid)
                 .findFirst().orElse(null);
-        user.removeLecture(task);
+        if (lectureItem == null) {
+            return;
+        }
+        user.removeLecture(lectureItem);
         userRepository.update(user);
+    }
+
+    private void validateTask(Task task) {
+        if (StringUtils.isEmpty(task.getTitle())) {
+            throw new InvalidValueException("task title cannot be empty");
+        }
+        if (task.getRepeat() != RepeatType.NONE &&
+                task.getStartDate().after(task.getDueDate())) {
+            throw new InvalidValueException("invalid task date");
+        }
+        if (task.getEndTime().getTime() - task.getStartTime().getTime() < 15 * 60 * 1000 ||
+            task.getStartTime().getTime() % (5 * 60 * 1000) != 0 ||
+                task.getEndTime().getTime() % (5 * 60 * 1000) != 0) {
+            throw new InvalidValueException("invalid task time");
+        }
     }
 
     /**

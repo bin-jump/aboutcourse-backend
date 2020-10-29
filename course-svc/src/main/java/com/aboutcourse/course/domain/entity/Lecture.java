@@ -33,7 +33,8 @@ public class Lecture extends EntityBase<Lecture> {
     @Column(name = "info")
     private String info;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "lecture", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "lecture",
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<TimeInterval> intervals = new HashSet<>();
 

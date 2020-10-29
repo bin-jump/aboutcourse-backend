@@ -25,12 +25,12 @@ public class TimeInterval extends EntityBase<TimeInterval> {
             throw new InvalidValueException("start and end time of time interval not valid");
         }
         if (!(Helper.validTime(s) && Helper.validTime(e))) {
-            throw new InvalidValueException("start and end time of time interval not valid");
+            throw new InvalidValueException("start or end time of time interval not valid");
         }
 
         day = d;
-        start = s;
-        end = e;
+        start = Helper.timeOnly(s);
+        end = Helper.timeOnly(e);
     }
 
     @Column(name = "day")

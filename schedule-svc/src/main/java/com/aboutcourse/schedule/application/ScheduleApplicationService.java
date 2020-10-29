@@ -4,15 +4,18 @@ import com.aboutcourse.common.api.BaseResponse;
 import com.aboutcourse.common.error.ResourceNotFoundException;
 import com.aboutcourse.course.client.CourseClient;
 import com.aboutcourse.course.dto.LectureDto;
+import com.aboutcourse.schedule.application.assembler.TagAssembler;
 import com.aboutcourse.schedule.application.assembler.TaskAssembler;
 import com.aboutcourse.schedule.domain.entity.LectureItem;
 import com.aboutcourse.schedule.domain.entity.Tag;
 import com.aboutcourse.schedule.domain.entity.Task;
 import com.aboutcourse.schedule.domain.entity.User;
 import com.aboutcourse.schedule.domain.entity.valueobject.RepeatType;
+import com.aboutcourse.schedule.domain.repository.TagRepository;
 import com.aboutcourse.schedule.domain.repository.UserRepository;
 import com.aboutcourse.schedule.domain.service.ScheduleService;
 import com.aboutcourse.schedule.domain.service.command.CreateTaskCommand;
+import com.aboutcourse.schedule.dto.TagDto;
 import com.aboutcourse.schedule.dto.TaskDto;
 import com.aboutcourse.schedule.dto.TaskItemDto;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +37,22 @@ public class ScheduleApplicationService {
     UserRepository userRepository;
 
     @Autowired
+    TagRepository tagRepository;
+
+    @Autowired
     CourseClient courseClient;
 
     @Autowired
     ScheduleService scheduleService;
+
+    public List<LectureDto> searchCourse(String searchKey, Long userId) {
+        return courseClient.search(searchKey, userId).getData();
+    }
+
+    public List<TagDto> searchTag(String searchKey, Long userId) {
+        List<Tag> tags = tagRepository.findByNamePrefix(userId, searchKey);
+        return tags.stream().map(TagAssembler::toDto).collect(Collectors.toList());
+    }
 
     public List<TaskItemDto> getUserSchedule(Long id) {
         User user = userRepository.getById(id);
@@ -99,5 +114,9 @@ public class ScheduleApplicationService {
         scheduleService.removeTask(uid, id);
     }
 
+    @Transactional
+    public void removeLecture(Long uid, Long lid) {
+        scheduleService.removeLecture(uid, lid);
+    }
 
 }

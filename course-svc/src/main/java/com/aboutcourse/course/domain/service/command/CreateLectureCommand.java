@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class CreateLectureCommand {
 
-    private long userId;
+    private Long studentId;
 
     private String title;
 
@@ -22,7 +22,7 @@ public class CreateLectureCommand {
 
     private Date dueDate;
 
-    @Singular
+    @Builder.Default
     private List<TimeInterval> intervals = new ArrayList<>();
 
     private String info;

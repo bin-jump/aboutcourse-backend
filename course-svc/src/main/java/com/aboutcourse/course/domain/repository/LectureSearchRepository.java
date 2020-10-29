@@ -10,6 +10,6 @@ public interface LectureSearchRepository {
 
     void save(Lecture lecture);
 
-    List<Lecture> search(String school, String major, String key);
+    List<Lecture> search(String title, Long schoolId, Long majorId);
 
 }

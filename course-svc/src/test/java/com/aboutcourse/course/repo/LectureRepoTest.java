@@ -2,6 +2,7 @@ package com.aboutcourse.course.repo;
 
 import com.aboutcourse.course.CourseApplication;
 import com.aboutcourse.course.domain.entity.Lecture;
+import com.aboutcourse.course.domain.entity.Student;
 import com.aboutcourse.course.domain.entity.valueobject.TimeInterval;
 import com.aboutcourse.course.domain.repository.LectureRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class LectureRepoTest {
 
     @Autowired
     LectureRepository lectureRepository;
+
 
     @Test
     public void testCreate() {

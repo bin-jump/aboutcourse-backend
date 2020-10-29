@@ -14,6 +14,10 @@ public class LectureDto {
 
     private Long id;
 
+    private Long schoolId;
+
+    private Long majorId;
+
     @NotBlank
     private String title;
 
@@ -21,7 +25,7 @@ public class LectureDto {
 
     private long dueDate;
 
-    @Singular
+    @Builder.Default
     private List<TimeIntervalDto> intervals = new ArrayList<>();
 
     private String info;

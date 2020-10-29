@@ -16,7 +16,7 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public List<Tag> findByNamePrefix(long uid, String prefix) {
-        return tagJpaRepository.findByUserIdAndLabelStartsWith(uid, prefix);
+        return tagJpaRepository.findTop10ByUserIdAndLabelStartsWith(uid, prefix);
     }
 
     @Override

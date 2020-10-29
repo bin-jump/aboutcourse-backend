@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor
@@ -12,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class BaseResponse<T> {
 
     private String message;
-    @Builder.Default
-    private ResultCode code = ResultCode.SUCCESS;
+
+    private HttpStatus code = HttpStatus.OK;
 
     private T data;
 
@@ -22,6 +23,6 @@ public class BaseResponse<T> {
     }
 
     public boolean isSuccess() {
-        return code == ResultCode.SUCCESS;
+        return code == HttpStatus.OK;
     }
 }

@@ -20,7 +20,7 @@ public class TaskAssembler {
                 .build();
 
         task.getTags().forEach(t -> {
-            res.getTags().add(new TagDto(t.getId(), t.getLabel()));
+            res.getTags().add(TagAssembler.toDto(t));
         });
 
         return res;
