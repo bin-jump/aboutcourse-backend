@@ -3,10 +3,7 @@ package com.aboutcourse.course.domain.entity;
 import com.aboutcourse.common.shared.EntityBase;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +21,19 @@ public class School extends EntityBase<School> {
     @Column(name = "info")
     private String info;
 
-    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "school", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Major> majors = new HashSet<>();
+
+    public void addMajor(Major major) {
+        for (Major m : getMajors()) {
+            if (m.getName().equals(major.getName())) {
+                return;
+            }
+        }
+        major.setSchool(this);
+        majors.add(major);
+    }
+
 }

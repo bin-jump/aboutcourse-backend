@@ -37,6 +37,8 @@ public class LectureService {
                 .startDate(Helper.dateOnly(command.getStartDate()))
                 .dueDate(Helper.dateOnly(command.getDueDate()))
                 .info(command.getInfo())
+                .reviewNumber(0)
+                .scoreSum(0)
                 .build();
 
         command.getIntervals().forEach(t -> {

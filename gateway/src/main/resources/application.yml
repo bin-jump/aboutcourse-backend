@@ -16,5 +16,5 @@ zuul:
       path: /schedule/**
     course-route:
       url: http://localhost:8084
-      path: /course/**
+      path: /lecture/**
 

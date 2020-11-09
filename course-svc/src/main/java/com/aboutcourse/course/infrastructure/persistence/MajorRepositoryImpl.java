@@ -6,6 +6,8 @@ import com.aboutcourse.course.infrastructure.persistence.jpa.MajorJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class MajorRepositoryImpl implements MajorRepository {
 
@@ -16,4 +18,5 @@ public class MajorRepositoryImpl implements MajorRepository {
     public Major create(Major major) {
         return majorJpaRepository.save(major);
     }
+
 }
